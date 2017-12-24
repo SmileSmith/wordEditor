@@ -3,12 +3,13 @@
 */
 
 import $ from '../util/dom-core.js'
-import _config from '../config.js'
+import _config from '../config/index.js'
 import Menus from '../menus/index.js'
 import Text from '../text/index.js'
 import Command from '../command/index.js'
 import selectionAPI from '../selection/index.js'
 import UploadImg from './upload/upload-img.js'
+import UploadHtml from './upload/upload-html.js'
 import { arrForEach, objForEach } from '../util/util.js'
 import { getRandom } from '../util/util.js'
 
@@ -176,6 +177,11 @@ Editor.prototype = {
         this.uploadImg = new UploadImg(this)
     },
 
+    // 添加协议上传
+    _initUploadHtml: function () {
+        this.uploadHtml = new UploadHtml(this)
+    },
+
     // 初始化菜单
     _initMenus: function () {
         this.menus = new Menus(this)
@@ -301,6 +307,9 @@ Editor.prototype = {
 
         // 添加 图片上传
         this._initUploadImg()
+
+        // 添加 图片上传
+        this._initUploadHtml()
 
         // 初始化选区，将光标定位到内容尾部
         this.initSelection(true)

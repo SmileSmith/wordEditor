@@ -1,3 +1,5 @@
+import { htmlFilterRules, htmlReplaceRules, htmlWrapper } from './html-reg.js'
+
 /*
     配置信息
 */
@@ -18,6 +20,7 @@ const config = {
         'justify',
         'quote',
         'emoticon',
+        'html',
         'image',
         'table',
         'video',
@@ -382,6 +385,13 @@ const config = {
     //     // insert 是获取图片 url 后，插入到编辑器的方法
     //     insert(imgUrl)
     // }
+
+    // word html过滤规则
+    htmlFilterRules,
+    // word html替换规则
+    htmlReplaceRules,
+    // html包装
+    htmlWrapper
 }
 
 export default config
