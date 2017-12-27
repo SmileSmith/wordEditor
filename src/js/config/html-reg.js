@@ -11,7 +11,7 @@ export const htmlFilterRules = [
 export const htmlReplaceRules = [
     {
         origin: /<style>[\s\S]*<\/style>/g,
-        replace: 
+        replace:
 `<style>
   body {
     color:#333;
@@ -180,7 +180,7 @@ export const htmlReplaceRules = [
     }
 ]
 
-export const htmlWrapper = (content, title) => 
+export const htmlWrapper = (content, title) =>
 content.replace(/(<style>[\s\S]*<\/style>)([\s\S]+)/, (m, m1, m2) => {
     return `
 <!DOCTYPE html>
