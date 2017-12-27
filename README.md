@@ -23,4 +23,6 @@ editor.create()
 - 安装包完成之后，运行`npm start`
 - 打开浏览器访问[localhost:4000/](http://localhost:4000/)
 
+## 请访问
 
+**GITHUB托管** —— [https://smilesmith.github.io/word-editor-website/](https://smilesmith.github.io/word-editor-website/)
