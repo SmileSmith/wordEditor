@@ -37,21 +37,9 @@ UploadHtml.prototype = {
         if (!content) {
             return
         }
-        
+
         const editor = this.editor
         const config = editor.config
-
-        // TODO:校验格式
-        /*         const linkImgCheck = config.linkImgCheck
-                let checkResult
-                if (linkImgCheck && typeof linkImgCheck === 'function') {
-                    checkResult = linkImgCheck(link)
-                    if (typeof checkResult === 'string') {
-                        // 校验失败，提示信息
-                        alert(checkResult)
-                        return
-                    }
-                } */
 
         editor.txt.html(this.filterHtml(content))
     },

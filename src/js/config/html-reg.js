@@ -1,4 +1,3 @@
-
 export const htmlFilterRules = [
     /<meta [^<>]*>/g,
     /<[\/]?span[^<>]*>/g,
@@ -11,8 +10,7 @@ export const htmlFilterRules = [
 export const htmlReplaceRules = [
     {
         origin: /<style>[\s\S]*<\/style>/g,
-        replace:
-`<style>
+        replace: `<style>
   body {
     color:#333;
   }
@@ -44,6 +42,10 @@ export const htmlReplaceRules = [
 
   .article .big-gap {
     margin: 150px 0;
+  }
+
+  .article .no-gap {
+    margin: 0;
   }
 
   .article section {
@@ -119,8 +121,20 @@ export const htmlReplaceRules = [
         }
     },
     {
-        origin: /<p [^<>]+>/g,
-        replace: '<p>'
+        origin: /<p( [^<>]+)>/g,
+        replace: (m, m1) => {
+            // 保留text-align，用class替代
+            return m.replace(m1, cm1 => {
+                let textAlignClass = ''
+                if (cm1.match(/text-align:right/)) {
+                    textAlignClass = ' class="right"'
+                }
+                if (cm1.match(/text-align:center/)) {
+                    textAlignClass = ' class="center"'
+                }
+                return textAlignClass
+            })
+        }
     },
     {
         origin: /<u [^<>]+>/g,
@@ -143,7 +157,7 @@ export const htmlReplaceRules = [
         replace: '<tr>'
     },
     {
-        origin: /<td([^<>]*)>([^(td)]*)<\/td>/g,
+        origin: /<td([^<>]*)>([\s\S]*?)<\/td>/g,
         replace: function replace(m, m1, m2) {
             return m
                 .replace(m1, cm1 => {
@@ -168,9 +182,10 @@ export const htmlReplaceRules = [
                 })
         }
     },
+    // 换占位的空白字符，去除行间距
     {
-        origin: /\&nbsp\;/g,
-        replace: ' '
+        origin: /<p>&nbsp;<\/p>/g,
+        replace: '<p class="no-gap">&nbsp;</p>'
     },
     {
         origin: />[\s]?['"]?([\d\.]+)[^ \d\.]/g,
@@ -181,8 +196,9 @@ export const htmlReplaceRules = [
 ]
 
 export const htmlWrapper = (content, title) =>
-content.replace(/(<style>[\s\S]*<\/style>)([\s\S]+)/, (m, m1, m2) => {
-    return `
+    content
+        .replace(/(<style>[\s\S]*<\/style>)([\s\S]+)/, (m, m1, m2) => {
+            return `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -197,6 +213,6 @@ content.replace(/(<style>[\s\S]*<\/style>)([\s\S]+)/, (m, m1, m2) => {
 ${m2}
 </body>
 </html>
-    `
-}).replace(/(\n|\r\n|\r)\1+/g, '$1')
-
+`
+        })
+        .replace(/(\n|\r\n|\r)\1+/g, '$1')
