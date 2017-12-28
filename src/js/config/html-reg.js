@@ -115,7 +115,7 @@ export const htmlReplaceRules = [
 `
     },
     {
-        origin: /<body [^<>]+>([\s\S]*)<\/body>/g,
+        origin: /<body[^<>]*?>([\s\S]*)<\/body>/g,
         replace: (m, m1) => {
             return `<body>\n<div class="article">${m1}</div>\n</body>`
         }

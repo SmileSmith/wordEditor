@@ -106,7 +106,6 @@ UploadHtml.prototype = {
     clearHtml: function() {
         const editor = this.editor
         editor.txt.clear()
-        editor.change()
     },
     // 导出Html
     exportHtml: function(content, title) {
