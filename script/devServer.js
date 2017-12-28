@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const formidable = require('formidable')
-const util  = require('./util.js')
 const bodyParser = require('body-parser')
 const express = require('express')
 const opn = require('opn')
@@ -18,13 +17,11 @@ app.use(
 )
 
 // 静态文件服务，针对 html js css fonts 文件
-const devDir = path.join(__dirname, '..', '..', 'dev')
-const releaseDir = path.join(__dirname, '..', '..', 'release')
-const protocolDir = path.join(__dirname, '..', 'protocol')
+const sampleDir = path.join(__dirname, '..', 'sample')
+const releaseDir = path.join(__dirname, '..', 'release')
 
-app.use(express.static(devDir))
+app.use(express.static(sampleDir))
 app.use(express.static(releaseDir))
-app.use(express.static(protocolDir))
 
 
 // 默认打开首页
@@ -42,13 +39,13 @@ function saveImages(req) {
                 reject('formidable, form.parse err', err.stack)
             }
             // 存储图片的文件夹
-            const storePath = path.resolve(__dirname, '..', 'upload-files')
+            const storePath = path.resolve(sampleDir, 'upload-files')
             if (!fs.existsSync(storePath)) {
                 fs.mkdirSync(storePath)
             }
 
             // 遍历所有上传来的图片
-            util.objForEach(files, (name, file) => {
+            files.forEach((name, file) => {
                 // 图片临时位置
                 const tempFilePath = file.path
                 // 图片名称和路径
@@ -79,7 +76,7 @@ app.post('/upload-img', function* (req, res) {
 })
 
 app.post('/upload-html', function(req, res) {
-    const outputPath = path.join(__dirname, '..', 'protocol', 'output', `${req.body.fileName}.html`)
+    const outputPath = path.join(sampleDir, 'protocol', 'output', `${req.body.fileName}.html`)
     fs.writeFile(outputPath, req.body.content, 'utf-8', err => {
         if (err) {
             console.log(err)
