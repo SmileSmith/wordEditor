@@ -25,4 +25,4 @@ editor.create()
 
 ## 请访问
 
-**GITHUB托管** —— [https://smilesmith.github.io/word-editor-website/](https://smilesmith.github.io/word-editor-website/)
+**GITHUB托管** —— [https://smilesmith.github.io/wordEditor/](https://smilesmith.github.io/wordEditor/)
