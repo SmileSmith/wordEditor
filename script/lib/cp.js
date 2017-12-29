@@ -1,6 +1,6 @@
-import cp from 'child_process'
+const cp = require('child_process')
 
-export const spawn = (command, args, options) =>
+const spawn = (command, args, options) =>
     new Promise((resolve, reject) => {
         cp.spawn(command, args, options).on('close', code => {
             if (code === 0) {
@@ -11,7 +11,7 @@ export const spawn = (command, args, options) =>
         })
     })
 
-export const exec = (command, options) =>
+const exec = (command, options) =>
     new Promise((resolve, reject) => {
         cp.exec(command, options, (err, stdout, stderr) => {
             if (err) {
@@ -23,4 +23,7 @@ export const exec = (command, options) =>
         })
     })
 
-export default { spawn, exec }
+module.exports = {
+    spawn,
+    exec
+}

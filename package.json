@@ -6,7 +6,7 @@
   "homepage": "http://smilesmith.github.io/",
   "author": {
     "name": "chenlongde",
-    "url": "https://github.com/chenlongde"
+    "url": "https://github.com/SmileSmith"
   },
   "keywords": [
     "textEditor",
@@ -20,7 +20,7 @@
       "mail": "longde_chen@163.com"
     }
   ],
-  "repository": "https://github.com/SmileSmith/textEditor",
+  "repository": "https://github.com/SmileSmith/wordEditor",
   "license": "MIT",
   "scripts": {
     "start": "concurrently --names \" gulp ,server\" -c \"cyan,gray.dim\" \"npm -s run release\" \"npm -s run dev\" ",

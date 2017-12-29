@@ -1,27 +1,16 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-import path from 'path'
-import fetch from 'node-fetch'
-import { spawn } from './lib/cp'
-import { makeDir, moveDir, cleanDir } from './lib/fs'
-import run from './run'
+const path = require('path')
+const cp = require('./lib/cp')
+const fs = require('./lib/fs')
+const opn = require('opn')
 
 // GitHub Pages
 const remote = {
     name: 'SmileSmith',
     url: 'https://github.com/SmileSmith/wordEditor.git',
     branch: 'gh-pages',
-    website: 'https://<user>.github.io/<repo>/',
+    website: 'https://smilesmith.github.io/wordEditor',
     static: true
 }
-
 
 const options = {
     cwd: path.resolve(__dirname, '../build'),
@@ -32,19 +21,25 @@ const options = {
  * Deploy the contents of the `/build` folder to a remote server via Git.
  */
 async function deploy() {
+    const startDeployTime = new Date()
+
     // Initialize a new repository
-    await makeDir('build')
-    await spawn('git', ['init', '--quiet'], options)
+    if (!fs.existsSync('build')) {
+        fs.mkdirSync('build')
+    }
+    fs.cleardirSync('build', { ignore: ['.git'] })
+
+    await cp.spawn('git', ['init', '--quiet'], options)
 
     // Changing a remote's URL
     let isRemoteExists = false
     try {
-        await spawn('git', ['config', '--get', `remote.${remote.name}.url`], options)
+        await cp.spawn('git', ['config', '--get', `remote.${remote.name}.url`], options)
         isRemoteExists = true
     } catch (error) {
         /* skip */
     }
-    await spawn(
+    await cp.spawn(
         'git',
         ['remote', isRemoteExists ? 'set-url' : 'add', remote.name, remote.url],
         options
@@ -53,43 +48,50 @@ async function deploy() {
     // Fetch the remote repository if it exists
     let isRefExists = false
     try {
-        await spawn(
+        await cp.spawn(
             'git',
             ['ls-remote', '--quiet', '--exit-code', remote.url, remote.branch],
             options
         )
         isRefExists = true
     } catch (error) {
-        await spawn('git', ['update-ref', '-d', 'HEAD'], options)
+        await cp.spawn('git', ['update-ref', '-d', 'HEAD'], options)
     }
     if (isRefExists) {
-        await spawn('git', ['fetch', remote.name], options)
-        await spawn('git', ['reset', `${remote.name}/${remote.branch}`, '--hard'], options)
-        await spawn('git', ['clean', '--force'], options)
+        await cp.spawn('git', ['fetch', remote.name], options)
+        await cp.spawn('git', ['reset', `${remote.name}/${remote.branch}`, '--hard'], options)
+        await cp.spawn('git', ['clean', '--force'], options)
     }
 
     // Build the project in RELEASE mode which
     // generates optimized and minimized bundles
-    await cleanDir('build/*', {
-        nosort: true,
-        dot: true
-    })
-    await spawn('gulp')
-    await moveDir('release', 'build')
-    await moveDir('sample', 'build')
+    // await cp.spawn('gulp')
+    fs.copydirSync('release', 'build')
+    fs.copydirSync('sample', 'build')
 
     // Push the contents of the build folder to the remote server via Git
-    await spawn('git', ['add', '.', '--all'], options)
+    await cp.spawn('git', ['add', '.', '--all'], options)
     try {
-        await spawn('git', ['diff', '--cached', '--exit-code', '--quiet'], options)
+        await cp.spawn('git', ['diff', '--cached', '--exit-code', '--quiet'], options)
     } catch (error) {
-        await spawn('git', ['commit', '--message', `Update ${new Date().toISOString()}`], options)
+        await cp.spawn(
+            'git',
+            ['commit', '--message', `Update ${new Date().toLocaleString()}`],
+            options
+        )
     }
-    await spawn('git', ['push', remote.name, `master:${remote.branch}`, '--set-upstream'], options)
+    await cp.spawn(
+        'git',
+        ['push', remote.name, `master:${remote.branch}`, '--set-upstream'],
+        options
+    )
 
+    opn(remote.website)
+    const endDeployTime = new Date()
+    console.log(`deploy success in ${(endDeployTime - startDeployTime)/1000} s.`)
     // Check if the site was successfully deployed
-    const response = await fetch(remote.website)
-    console.info(`${remote.website} => ${response.status} ${response.statusText}`)
+    console.info(`open => ${remote.website} `)
+
 }
 
-export default deploy
+deploy()
