@@ -554,11 +554,11 @@ var htmlReplaceRules = [{
         // 保留text-align，用class替代
         return m.replace(m1, function (cm1) {
             var textAlignClass = '';
-            if (cm1.match(/text-align:right/)) {
-                textAlignClass = ' style="text-align:right; text-indent: 0;"';
+            if (cm1.match(/text-align:[ ]?right/)) {
+                textAlignClass = ' style="text-align: right; text-indent: 0;"';
             }
-            if (cm1.match(/text-align:center/)) {
-                textAlignClass = ' style="text-align:center; text-indent: 0;"';
+            if (cm1.match(/text-align:[ ]?center/)) {
+                textAlignClass = ' style="text-align: center; text-indent: 0;"';
             }
             return textAlignClass;
         });
