@@ -1,8 +1,8 @@
 export const htmlFilterRules = [
     /<meta [^<>]*>/g,
-    /<[\/]?span[^<>]*>/g,
-    /<[\/]?font[^<>]*>/g,
-    /<[\/]?div[^<>]*>/g,
+    /<\/?span[^<>]*>/g,
+    /<\/?font[^<>]*>/g,
+    /<\/?div[^<>]*>/g,
     /<\/(u[^a-zA-Z]?|b[^a-zA-Z]?)>[^<>]*<\1[^<>]*>/g,
     /<\/(u[^a-zA-Z]?|b[^a-zA-Z]?)>[^<>]*<\1[^<>]*>/g
 ]
@@ -81,25 +81,6 @@ export const htmlReplaceRules = [
     text-indent: 2em;
     line-height: 1.5;
   }
-
-  .article .center {
-    text-indent: 0 !important;
-    text-align: center;
-  }
-
-  .article .left {
-    text-indent: 0 !important;
-    text-align: left;
-  }
-
-  .article .right {
-    text-align: right;
-  }
-
-  .article  .red {
-    color: red;
-  }
-
   .article table {
     border: 1px solid #000;
     width: 100%;
@@ -127,10 +108,10 @@ export const htmlReplaceRules = [
             return m.replace(m1, cm1 => {
                 let textAlignClass = ''
                 if (cm1.match(/text-align:right/)) {
-                    textAlignClass = ' class="right"'
+                    textAlignClass = ' style="text-align:right; text-indent: 0;"'
                 }
                 if (cm1.match(/text-align:center/)) {
-                    textAlignClass = ' class="center"'
+                    textAlignClass = ' style="text-align:center; text-indent: 0;"'
                 }
                 return textAlignClass
             })
@@ -165,7 +146,7 @@ export const htmlReplaceRules = [
                     return (span && span[0]) || ''
                 })
                 .replace(m2, cm2 => {
-                    return cm2.replace(/<[\/]?p[^<>]*>/g, '')
+                    return cm2.replace(/<\/?p[^<>]*>/g, '')
                 })
         }
     },
@@ -178,7 +159,7 @@ export const htmlReplaceRules = [
                     return (span && span[0]) || ''
                 })
                 .replace(m2, cm2 => {
-                    return cm2.replace(/<[\/]?p[^<>]*>/g, '')
+                    return cm2.replace(/<\/?p[^<>]*>/g, '')
                 })
         }
     },
@@ -188,7 +169,7 @@ export const htmlReplaceRules = [
         replace: '<p class="no-gap">&nbsp;</p>'
     },
     {
-        origin: />[\s]?['"]?([\d\.]+)[^ \d\.]/g,
+        origin: />[\s]?['"]?([\d.]+)[^ \d.]/g,
         replace: (m, m1) => {
             return m.replace(m1, m1 + ' ')
         }

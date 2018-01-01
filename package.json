@@ -2,7 +2,7 @@
   "name": "texteditor",
   "title": "textEditor",
   "version": "3.0.15",
-  "description": "textEditor - 基于textEditor开发的 web-word编辑器",
+  "description": "textEditor - 基于wangEditor开发的 web-word编辑器",
   "homepage": "http://smilesmith.github.io/",
   "author": {
     "name": "chenlongde",
