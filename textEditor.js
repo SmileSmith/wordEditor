@@ -9,7 +9,6 @@
 */
 
 var polyfill = function () {
-
     // Object.assign
     if (typeof Object.assign != 'function') {
         Object.assign = function (target, varArgs) {
@@ -43,6 +42,7 @@ var polyfill = function () {
         Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector || function (s) {
             var matches = (this.document || this.ownerDocument).querySelectorAll(s),
                 i = matches.length;
+            // eslint-disable-next-line
             while (--i >= 0 && matches.item(i) !== this) {}
             return i > -1;
         };
@@ -538,82 +538,82 @@ $.offAll = function () {
     });
 };
 
-var htmlFilterRules = [/<meta [^<>]*>/g, /<[\/]?span[^<>]*>/g, /<[\/]?font[^<>]*>/g, /<[\/]?div[^<>]*>/g, /<\/(u[^a-zA-Z]?|b[^a-zA-Z]?)>[^<>]*<\1[^<>]*>/g, /<\/(u[^a-zA-Z]?|b[^a-zA-Z]?)>[^<>]*<\1[^<>]*>/g];
+var htmlFilterRules = [/<meta [^<>]*>/g, /<\/?span[^<>]*>/g, /<\/?font[^<>]*>/g, /<\/?div[^<>]*>/g, /<\/(u[^a-zA-Z]?|b[^a-zA-Z]?)>[^<>]*<\1[^<>]*>/g, /<\/(u[^a-zA-Z]?|b[^a-zA-Z]?)>[^<>]*<\1[^<>]*>/g];
 
 var htmlReplaceRules = [{
-  origin: /<style>[\s\S]*<\/style>/g,
-  replace: '<style>\n  body {\n    color:#333;\n  }\n  .article {\n    padding: 20px 15px;\n    font-size: 15px;\n  }\n  .article * {\n    max-width: 100%;\n    box-sizing: border-box;\n    word-wrap: break-word;\n  }\n\n  .article li {\n    list-style: none;\n    line-height: 1.5;\n  }\n\n  .article .title {\n    font-size: 20px;\n    font-weight: bold;\n  }\n\n  .article .big-title {\n    font-size: 30px;\n    text-align: center;\n    margin: 150px 0;\n  }\n\n  .article .big-gap {\n    margin: 150px 0;\n  }\n\n  .article .no-gap {\n    margin: 0;\n  }\n\n  .article section {\n    margin-bottom: 1.5em;\n  }\n\n  .article  .footer {\n    float: right;\n    margin-right: 50px;\n  }\n\n  .article h1 {\n    text-indent: 2em;\n    font-size: 18px;\n    font-weight: 400;\n    margin-bottom: .9em;\n  }\n\n  .article h2 {\n    text-indent: 2em;\n    font-size: 16px;\n    font-weight: 400;\n    margin-bottom: .34em;\n  }\n  .article h3 {\n    text-indent: 2em;\n    font-weight: 400;\n    font-size: 15px;\n    margin-bottom: .34em;\n  }\n  .article p {\n    margin: 0 0 .8em;\n    text-indent: 2em;\n    line-height: 1.5;\n  }\n\n  .article .center {\n    text-indent: 0 !important;\n    text-align: center;\n  }\n\n  .article .left {\n    text-indent: 0 !important;\n    text-align: left;\n  }\n\n  .article .right {\n    text-align: right;\n  }\n\n  .article  .red {\n    color: red;\n  }\n\n  .article table {\n    border: 1px solid #000;\n    width: 100%;\n    margin: 0 auto;\n    border-collapse: collapse;\n  }\n  .article table tr td {\n    border: 1px solid #000;\n    margin: 0;\n    height: 20px;\n  }\n</style>\n'
+    origin: /<style>[\s\S]*<\/style>/g,
+    replace: '<style>\n  body {\n    color:#333;\n  }\n  .article {\n    padding: 20px 15px;\n    font-size: 15px;\n  }\n  .article * {\n    max-width: 100%;\n    box-sizing: border-box;\n    word-wrap: break-word;\n  }\n\n  .article li {\n    list-style: none;\n    line-height: 1.5;\n  }\n\n  .article .title {\n    font-size: 20px;\n    font-weight: bold;\n  }\n\n  .article .big-title {\n    font-size: 30px;\n    text-align: center;\n    margin: 150px 0;\n  }\n\n  .article .big-gap {\n    margin: 150px 0;\n  }\n\n  .article .no-gap {\n    margin: 0;\n  }\n\n  .article section {\n    margin-bottom: 1.5em;\n  }\n\n  .article  .footer {\n    float: right;\n    margin-right: 50px;\n  }\n\n  .article h1 {\n    text-indent: 2em;\n    font-size: 18px;\n    font-weight: 400;\n    margin-bottom: .9em;\n  }\n\n  .article h2 {\n    text-indent: 2em;\n    font-size: 16px;\n    font-weight: 400;\n    margin-bottom: .34em;\n  }\n  .article h3 {\n    text-indent: 2em;\n    font-weight: 400;\n    font-size: 15px;\n    margin-bottom: .34em;\n  }\n  .article p {\n    margin: 0 0 .8em;\n    text-indent: 2em;\n    line-height: 1.5;\n  }\n  .article table {\n    border: 1px solid #000;\n    width: 100%;\n    margin: 0 auto;\n    border-collapse: collapse;\n  }\n  .article table tr td {\n    border: 1px solid #000;\n    margin: 0;\n    height: 20px;\n  }\n</style>\n'
 }, {
-  origin: /<body[^<>]*?>([\s\S]*)<\/body>/g,
-  replace: function replace(m, m1) {
-    return '<body>\n<div class="article">' + m1 + '</div>\n</body>';
-  }
+    origin: /<body[^<>]*?>([\s\S]*)<\/body>/g,
+    replace: function replace(m, m1) {
+        return '<body>\n<div class="article">' + m1 + '</div>\n</body>';
+    }
 }, {
-  origin: /<p( [^<>]+)>/g,
-  replace: function replace(m, m1) {
-    // 保留text-align，用class替代
-    return m.replace(m1, function (cm1) {
-      var textAlignClass = '';
-      if (cm1.match(/text-align:right/)) {
-        textAlignClass = ' class="right"';
-      }
-      if (cm1.match(/text-align:center/)) {
-        textAlignClass = ' class="center"';
-      }
-      return textAlignClass;
-    });
-  }
+    origin: /<p( [^<>]+)>/g,
+    replace: function replace(m, m1) {
+        // 保留text-align，用class替代
+        return m.replace(m1, function (cm1) {
+            var textAlignClass = '';
+            if (cm1.match(/text-align:right/)) {
+                textAlignClass = ' style="text-align:right; text-indent: 0;"';
+            }
+            if (cm1.match(/text-align:center/)) {
+                textAlignClass = ' style="text-align:center; text-indent: 0;"';
+            }
+            return textAlignClass;
+        });
+    }
 }, {
-  origin: /<u [^<>]+>/g,
-  replace: '<u>'
+    origin: /<u [^<>]+>/g,
+    replace: '<u>'
 }, {
-  origin: /<b [^<>]+>/g,
-  replace: '<b>'
+    origin: /<b [^<>]+>/g,
+    replace: '<b>'
 }, {
-  origin: /<tbody [^<>]+>/g,
-  replace: '<tbody>'
+    origin: /<tbody [^<>]+>/g,
+    replace: '<tbody>'
 }, {
-  origin: /<table [^<>]+>/g,
-  replace: '<table>'
+    origin: /<table [^<>]+>/g,
+    replace: '<table>'
 }, {
-  origin: /<tr [^<>]+>/g,
-  replace: '<tr>'
+    origin: /<tr [^<>]+>/g,
+    replace: '<tr>'
 }, {
-  origin: /<td([^<>]*)>([\s\S]*?)<\/td>/g,
-  replace: function replace(m, m1, m2) {
-    return m.replace(m1, function (cm1) {
-      var span = cm1.match(/( (rowspan|colspan)=['"]?\d+['"]?)/);
-      return span && span[0] || '';
-    }).replace(m2, function (cm2) {
-      return cm2.replace(/<[\/]?p[^<>]*>/g, '');
-    });
-  }
+    origin: /<td([^<>]*)>([\s\S]*?)<\/td>/g,
+    replace: function replace(m, m1, m2) {
+        return m.replace(m1, function (cm1) {
+            var span = cm1.match(/( (rowspan|colspan)=['"]?\d+['"]?)/);
+            return span && span[0] || '';
+        }).replace(m2, function (cm2) {
+            return cm2.replace(/<\/?p[^<>]*>/g, '');
+        });
+    }
 }, {
-  origin: /<th([^<>]*)>([^(th)]*)<\/th>/g,
-  replace: function replace(m, m1, m2) {
-    return m.replace(m1, function (cm1) {
-      var span = cm1.match(/( (rowspan|colspan)=['"]?\d+['"]?)/);
-      return span && span[0] || '';
-    }).replace(m2, function (cm2) {
-      return cm2.replace(/<[\/]?p[^<>]*>/g, '');
-    });
-  }
+    origin: /<th([^<>]*)>([^(th)]*)<\/th>/g,
+    replace: function replace(m, m1, m2) {
+        return m.replace(m1, function (cm1) {
+            var span = cm1.match(/( (rowspan|colspan)=['"]?\d+['"]?)/);
+            return span && span[0] || '';
+        }).replace(m2, function (cm2) {
+            return cm2.replace(/<\/?p[^<>]*>/g, '');
+        });
+    }
 },
 // 换占位的空白字符，去除行间距
 {
-  origin: /<p>&nbsp;<\/p>/g,
-  replace: '<p class="no-gap">&nbsp;</p>'
+    origin: /<p>&nbsp;<\/p>/g,
+    replace: '<p class="no-gap">&nbsp;</p>'
 }, {
-  origin: />[\s]?['"]?([\d\.]+)[^ \d\.]/g,
-  replace: function replace(m, m1) {
-    return m.replace(m1, m1 + ' ');
-  }
+    origin: />[\s]?['"]?([\d.]+)[^ \d.]/g,
+    replace: function replace(m, m1) {
+        return m.replace(m1, m1 + ' ');
+    }
 }];
 
 var htmlWrapper = function htmlWrapper(content, title) {
-  return content.replace(/(<style>[\s\S]*<\/style>)([\s\S]+)/, function (m, m1, m2) {
-    return '\n<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />\n  <meta http-equiv="X-UA-Compatible" content="ie=edge" />\n  <title>\u300A' + title + '\u300B</title>\n  ' + m1 + '\n</head>\n<body>\n' + m2 + '\n</body>\n</html>\n';
-  }).replace(/(\n|\r\n|\r)\1+/g, '$1');
+    return content.replace(/(<style>[\s\S]*<\/style>)([\s\S]+)/, function (m, m1, m2) {
+        return '\n<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />\n  <meta http-equiv="X-UA-Compatible" content="ie=edge" />\n  <title>\u300A' + title + '\u300B</title>\n  ' + m1 + '\n</head>\n<body>\n' + m2 + '\n</body>\n</html>\n';
+    }).replace(/(\n|\r\n|\r)\1+/g, '$1');
 };
 
 /*
